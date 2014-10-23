@@ -17,6 +17,7 @@ var chart;
 var data;
 
 function init() {
+  chart = new google.visualization.ColumnChart(document.getElementById('visualization'));
   setInterval(loop, 1000);
 }
 
@@ -37,18 +38,7 @@ function handleQueryResponse(response) {
     return;
   }
 
-  var newData = response.getDataTable();
-  if (data == undefined) {
-    data = newData;
-  } else {
-    for (var r = 0; r < newData.getNumberOfRows(); r++) {
-      for (var c = 0; c < newData.getNumberOfColumns(); c++) {
-        var newValue = newData.getValue(r, c);
-        if (newValue != data.getValue(r, c)) {
-          data.setValue(r, c, newValue);
-        }
-      }
-    }
-  }
+  var data = response.getDataTable();
+
   drawChart(data);
 }
