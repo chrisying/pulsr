@@ -8,7 +8,6 @@ Real time audience sentiment tracking
 - app.js - connected to graph.html (the meat of the code)
 
 Todo:
-- Make firebase calculate mean of last 10 seconds
-- Create slider for user input
+- Make firebase calculate sum of all user inputs
 - CSS
 
