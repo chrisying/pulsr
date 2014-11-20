@@ -3,13 +3,11 @@ var TIMESTEP = 1000;
 google.load("visualization", '1', {packages:['corechart', 'gauge']});
 google.setOnLoadCallback(init);
 
-// var datasrc = 'https://docs.google.com/spreadsheets/d/1Mj9iXWJxSKRC21WFI_uKSvbJLeUNSt2sHJLXNOhYLZY/edit#gid=0';
-
 var coptions = {
   width: 600,
   height: 300,
   animation: {
-    duration: 1000,
+    duration: TIMESTEP,
     easing: 'linear',
   },
   legend: {position: 'none'},
@@ -24,20 +22,35 @@ var goptions = {
   height: 200,
   min: -3,
   max: 3,
-  redFrom: -100,
+  redFrom: -3,
   redTo: -1,
   yellowFrom: -1,
   yellowTo: 1,
   greenFrom: 1,
-  greenTo: 100,
+  greenTo: 3,
   minorTicks: 10,
+  animation: {
+    duration: TIMESTEP,
+    easing: 'linear',
+  }
 }
 
 var chart, data;
+var fire = new Firebase('https://pulsr-data.firebaseio.com/');
+var dataRef;
 
 function init() {
   chart = new google.visualization.AreaChart(document.getElementById('chart'));
   gauge = new google.visualization.Gauge(document.getElementById('gauge'));
+  var graphID = getParameterByName('id');
+  console.log('graphID');
+  console.log(graphID);
+  var idRef = fire.child('map/' + graphID + '/uid');
+  idRef.once('value', function(data) {
+    var uid = data.val();
+    console.log(uid);
+    dataRef = fire.child('data/' + uid);
+  });
   data = [-2,-1,0,1,2];
   setInterval(loop, TIMESTEP);
 }
@@ -58,9 +71,14 @@ function drawChart(data) {
 }
 
 function loop() {
-  data.unshift(Math.random()*6 - 3);
-  data.pop();
-  drawChart(data);
+  dataRef.once('value', function(snap) {
+    var val = snap.val();
+    var score = val.sum / (val.num + 1);
+    console.log(score);
+    data.unshift(score);
+    data.pop();
+    drawChart(data);
+  });
 }
 
 function addIndex(array) {
@@ -71,20 +89,9 @@ function addIndex(array) {
   return newArray;
 }
 
-/**
-function loop() {
-  var query = new google.visualization.Query(datasrc);
-  query.send(handleQueryResponse);
+function getParameterByName(name) {
+  name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+  var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+      results = regex.exec(location.search);
+  return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
-
-function handleQueryResponse(response) {
-  if (response.isError()) {
-    alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
-    return;
-  }
-
-  data = response.getDataTable();
-
-  drawChart(data);
-}
-**/
