@@ -18,16 +18,16 @@ var coptions = {
 }
 
 var goptions = {
-  width: 200,
-  height: 200,
-  min: -3,
-  max: 3,
-  redFrom: -3,
-  redTo: -1,
-  yellowFrom: -1,
-  yellowTo: 1,
-  greenFrom: 1,
-  greenTo: 3,
+  width: 300,
+  height: 300,
+  min: -10,
+  max: 10,
+  redFrom: -10,
+  redTo: -5,
+  yellowFrom: -5,
+  yellowTo: 5,
+  greenFrom: 5,
+  greenTo: 10,
   minorTicks: 10,
   animation: {
     duration: TIMESTEP,
@@ -43,7 +43,6 @@ function init() {
   chart = new google.visualization.AreaChart(document.getElementById('chart'));
   gauge = new google.visualization.Gauge(document.getElementById('gauge'));
   var graphID = getParameterByName('id');
-  console.log('graphID');
   console.log(graphID);
   var idRef = fire.child('map/' + graphID + '/uid');
   idRef.once('value', function(data) {
@@ -51,7 +50,9 @@ function init() {
     console.log(uid);
     dataRef = fire.child('data/' + uid);
   });
-  data = [-2,-1,0,1,2];
+  data = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,
+          21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,
+          41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60];
   setInterval(loop, TIMESTEP);
 }
 
@@ -71,6 +72,10 @@ function drawChart(data) {
 }
 
 function loop() {
+  // Polling
+  dataRef.child('sum').set(document.getElementById('score').value / 100);
+
+  // Visualization
   dataRef.once('value', function(snap) {
     var val = snap.val();
     var score = val.sum / (val.num + 1);
