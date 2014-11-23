@@ -8,7 +8,7 @@ function createNewGraph() {
   idRef.once('value', function(data) {
     if (data.val() === null) {
       var dataR = fire.child('data');
-      var newPush = dataR.push({'sum': 0, 'num': 0});
+      var newPush = dataR.push({'num': 0, 'queue': {}});
       var uid = newPush.name();
       var mapR = fire.child('map');
       mapR.child(shortName).set({uid: uid});
