@@ -2,16 +2,31 @@
 var fire = new Firebase('https://pulsr-data.firebaseio.com/');
 
 function createNewGraph() {
-  // Missing checks for empty/valid/already used name
-  var dataR = fire.child('data');
-  var newPush = dataR.push({'sum': 0, 'num': 0});
-  var uid = newPush.name();
-  var mapR = fire.child('map');
+  // Check that it hasn't been made already
   var shortName = document.getElementById('newgraph').value;  
-  mapR.child(shortName).set({uid: uid});
+  var idRef = fire.child('map/' + shortName + '/uid');
+  idRef.once('value', function(data) {
+    if (data.val() === null) {
+      var dataR = fire.child('data');
+      var newPush = dataR.push({'sum': 0, 'num': 0});
+      var uid = newPush.name();
+      var mapR = fire.child('map');
+      mapR.child(shortName).set({uid: uid});
+    } else {
+      console.log('name taken');
+    }
+  });
 }
 
 function navigateToGraph() {
-  // Missing check of graph DNE
-  window.location = 'graph.html?id=' + document.getElementById('gograph').value;
+  // Check graph DNE
+  var shortName = document.getElementById('gograph').value;
+  var idRef = fire.child('map/' + shortName + '/uid');
+  idRef.once('value', function(data) {
+    if (data.val() !== null) {
+      window.location = 'graph.html?id=' + document.getElementById('gograph').value;
+    } else {
+      console.log('graph dne');
+    }
+  });
 }
