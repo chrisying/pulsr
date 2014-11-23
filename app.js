@@ -11,10 +11,18 @@ var coptions = {
     easing: 'linear',
   },
   legend: {position: 'none'},
+  colors: ['red', 'green'],
   hAxis: {
+    title: 'Seconds ago',
     direction: -1,
   },
-  colors: ['red', 'green'],
+  vAxis: {
+    title: 'Sentiment',
+    viewWindow: {
+      max: 10,
+      min: -10,
+    },
+  },
 }
 
 var goptions = {
@@ -32,7 +40,7 @@ var goptions = {
   animation: {
     duration: TIMESTEP,
     easing: 'linear',
-  }
+  },
 }
 
 var chart, data;
@@ -73,7 +81,9 @@ function drawChart(data) {
 
 function loop() {
   // Polling
-  dataRef.child('sum').set(document.getElementById('score').value / 100);
+  var scoreEl = document.getElementById('score');
+  dataRef.child('sum').set(scoreEl.value / 100);
+  scoreEl.value *= 0.95;
 
   // Visualization
   dataRef.once('value', function(snap) {
