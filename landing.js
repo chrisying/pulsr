@@ -20,11 +20,11 @@ function createNewGraph() {
 
 function navigateToGraph() {
   // Check graph DNE
-  var shortName = document.getElementById('gograph').value;
+  var shortName = document.getElementById('newgraph').value;
   var idRef = fire.child('map/' + shortName + '/uid');
   idRef.once('value', function(data) {
     if (data.val() !== null) {
-      window.location = 'graph.html?id=' + document.getElementById('gograph').value;
+      window.location = 'graph.html?id=' + document.getElementById('newgraph').value;
     } else {
       console.log('graph dne');
     }
