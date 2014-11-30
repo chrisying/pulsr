@@ -48,7 +48,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Pulsr</a>
+                <a class="navbar-brand" href="index.html">Pulsr</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -61,16 +61,21 @@
                             <ul class="dropdown-menu", style="padding:17px;">
                                 <li>
   					<form class="form" id="formLogin"> 
-                				<input name="username" id="username" type="text" placeholder="Username"> 
-                				<input name="password" id="password" type="password" placeholder="Password"><br>
-                				<button type="button" id="btnLogin" class="btn">Login</button>
+                				<input name="graph" id="newgraph" type="text" placeholder="Graph Id"><br>
+                				<button type="button" id="btnLogin" class="btn" onclick='createNewGraph("newgraph")'>Create New Graph</button>
             				</form>
-				</li>
+					</li>
                             </ul>
                         </li>
                     </li>
                     <li>
-                        <a href="#">View existing graph</a>
+                        <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">View existing graph</a>
+                            <ul class="dropdown-menu", style="padding:17px;">
+                                <li>
+  					<form class="form" id="formLogin"> 
+                				<input name="graph" id="newgraph1" type="text" placeholder="Graph Id"><br>
+                				<button type="button" id="btnLogin" class="btn" onclick='navigateToGraph("newgraph1")'>View existing graph</button>
+            				</form>
                     </li>
                 </ul>
             </div>

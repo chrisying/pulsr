@@ -1,9 +1,9 @@
 
 var fire = new Firebase('https://pulsr-data.firebaseio.com/');
 
-function createNewGraph() {
+function createNewGraph(s) {
   // Check that it hasn't been made already
-  var shortName = document.getElementById('newgraph').value;  
+  var shortName = document.getElementById(s).value;  
   var idRef = fire.child('map/' + shortName + '/uid');
   idRef.once('value', function(data) {
     if (data.val() === null) {
@@ -18,13 +18,13 @@ function createNewGraph() {
   });
 }
 
-function navigateToGraph() {
+function navigateToGraph(p) {
   // Check graph DNE
-  var shortName = document.getElementById('newgraph').value;
+  var shortName = document.getElementById(p).value;
   var idRef = fire.child('map/' + shortName + '/uid');
   idRef.once('value', function(data) {
     if (data.val() !== null) {
-      window.location = 'graph.html?id=' + document.getElementById('newgraph').value;
+      window.location = 'graph.html?id=' + document.getElementById(p).value;
     } else {
       console.log('graph dne');
     }
