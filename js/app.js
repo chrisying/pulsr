@@ -17,7 +17,7 @@ var coptions = {
     direction: -1,
   },
   vAxis: {
-    title: 'Sentiment',
+    title: 'Pulse',
     viewWindow: {
       max: 10,
       min: -10,
@@ -52,11 +52,11 @@ function init() {
   chart = new google.visualization.AreaChart(document.getElementById('chart'));
   gauge = new google.visualization.Gauge(document.getElementById('gauge'));
   var graphID = getParameterByName('id');
-  console.log(graphID);
+  // console.log(graphID);
   var idRef = fire.child('map/' + graphID + '/uid');
   idRef.once('value', function(data) {
     var uid = data.val();
-    console.log(uid);
+    // console.log(uid);
     dataRef = fire.child('data/' + uid);
   });
   data = [];
@@ -106,11 +106,12 @@ function loop() {
         u = (u*c + score) / (c+1);
         c++;
       }
-      console.log(scores);
+      // console.log(scores);
       data.unshift(u);
       data.pop();
       drawChart(data);
       var lastPostRef = dataRef.child('queue').push({"vote": scoreEl.value / 100});
+      scoreEl.value *= 0.95;
       lastPostId = lastPostRef.key();
   });
 }

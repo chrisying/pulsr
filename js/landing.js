@@ -23,8 +23,10 @@ function navigateToGraph(p) {
   var shortName = document.getElementById(p).value;
   var idRef = fire.child('map/' + shortName + '/uid');
   idRef.once('value', function(data) {
+    // console.log('entered');
     if (data.val() !== null) {
-      window.location = 'graph.html?id=' + document.getElementById(p).value;
+      // console.log('not null' + data.val());
+      window.location = 'graph.html?id=' + shortName;
     } else {
       console.log('graph dne');
     }
